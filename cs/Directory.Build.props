@@ -1,0 +1,16 @@
+<Project>
+  <!-- Common .NET settings -->
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <!-- Read-only source tree -->
+  <PropertyGroup>
+    <BinariesFolder>$(MSBuildThisFileDirectory)bin</BinariesFolder>
+    <CommonIntermediateOutputRoot>$(MSBuildThisFileDirectory)obj\</CommonIntermediateOutputRoot>
+    <BaseIntermediateOutputPath>$(CommonIntermediateOutputRoot)$(Configuration)\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <OutputPath>$(BinariesFolder)\$(Configuration)\$(MSBuildProjectName)\</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+  </PropertyGroup>
+</Project>

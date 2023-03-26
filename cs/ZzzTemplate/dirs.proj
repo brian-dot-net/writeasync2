@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.Build.Traversal">
+  <ItemGroup>
+    <ProjectReference Include="dll\ZzzTemplate.Core.csproj" />
+    <ProjectReference Include="exe\ZzzTemplate.App.csproj" />
+    <ProjectReference Include="tests\ZzzTemplate.Tests.csproj" />
+  </ItemGroup>
+</Project>
