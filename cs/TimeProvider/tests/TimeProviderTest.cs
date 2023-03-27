@@ -67,6 +67,39 @@ public abstract class TimeProviderTest
         evt.Wait(TimeSpan.Zero).Should().BeTrue();
     }
 
+    [Fact]
+    public void TimerDelayedPeriodic()
+    {
+        var evt = new CountdownEvent(10);
+        ITimeProvider time = Init();
+
+        // |......F..|.F....F..|.F...
+        // |         |         |
+        // 0 ms      100 ms    200 ms
+        //
+        // F = timer fires
+        using (ITimer timer = time.CreateTimer(o => evt.Signal(int.Parse(o?.ToString() ?? "-1")), "1", TimeSpan.FromMilliseconds(70), TimeSpan.FromMilliseconds(50)))
+        {
+            evt.CurrentCount.Should().Be(10);
+
+            Wait(time, TimeSpan.FromMilliseconds(50));
+
+            evt.CurrentCount.Should().Be(10);
+
+            Wait(time, TimeSpan.FromMilliseconds(50));
+
+            evt.CurrentCount.Should().Be(9);
+
+            Wait(time, TimeSpan.FromMilliseconds(50));
+
+            evt.CurrentCount.Should().BeLessThanOrEqualTo(9);
+        }
+
+        Wait(time, TimeSpan.FromMilliseconds(50));
+
+        evt.CurrentCount.Should().BeInRange(7, 8);
+    }
+
     protected abstract ITimeProvider Init();
 
     protected abstract void Wait(ITimeProvider provider, TimeSpan duration);

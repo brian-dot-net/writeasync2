@@ -28,21 +28,46 @@ public sealed class FakeTimeProvider : ITimeProvider
     {
         _timer = new FakeTimer(callback, state, period);
         _deadline = UtcNow + dueTime;
-        if (_deadline == UtcNow)
-        {
-            _timer.Fire();
-        }
+        Wait(TimeSpan.Zero);
 
         return _timer;
     }
 
     public void Wait(TimeSpan duration)
     {
-        UtcNow += duration;
-        if (_timer is not null && UtcNow >= _deadline)
+        do
         {
-            _timer.Fire();
+            duration = WaitNext(duration);
         }
+        while (duration > TimeSpan.Zero);
+    }
+
+    private TimeSpan WaitNext(TimeSpan duration)
+    {
+        DateTimeOffset next = UtcNow + duration;
+        FakeTimer? timer = GetTimer();
+
+        if (timer is not null && next >= _deadline)
+        {
+            next = _deadline;
+            UtcNow = next;
+            timer.Fire();
+            _deadline += timer.Period;
+            return next - _deadline;
+        }
+
+        UtcNow = next;
+        return TimeSpan.Zero;
+    }
+
+    private FakeTimer? GetTimer()
+    {
+        if (_timer is not null && _timer.IsDisposed)
+        {
+            _timer = null;
+        }
+
+        return _timer;
     }
 
     private sealed class FakeTimer : ITimer
@@ -54,15 +79,14 @@ public sealed class FakeTimeProvider : ITimeProvider
         {
             _callback = callback;
             _state = state;
-            if (period != TimeSpan.Zero)
-            {
-                throw new NotImplementedException();
-            }
+            Period = period;
         }
 
-        public void Dispose()
-        {
-        }
+        public TimeSpan Period { get; }
+
+        public bool IsDisposed { get; private set; }
+
+        public void Dispose() => IsDisposed = true;
 
         public void Fire() => _callback(_state);
     }
