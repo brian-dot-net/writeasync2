@@ -16,5 +16,9 @@ public sealed class FakeTimeProvider : ITimeProvider
 
     public TimeZoneInfo LocalTimeZone { get; }
 
+    public long TimestampFrequency => 1000000;
+
+    public long GetTimestamp() => UtcNow.UtcTicks / 10;
+
     public void Wait(TimeSpan duration) => UtcNow += duration;
 }

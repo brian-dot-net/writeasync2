@@ -24,6 +24,22 @@ public abstract class TimeProviderTest
         TestTimeInfo(time, utcStart + TimeSpan.FromSeconds(0.1d), localStart + TimeSpan.FromSeconds(0.1d), TimeZoneInfo.Local);
     }
 
+    [Fact]
+    public void Timestamp()
+    {
+        ITimeProvider time = Init();
+
+        long start = time.GetTimestamp();
+
+        Wait(time, TimeSpan.FromMilliseconds(123));
+
+        long end = time.GetTimestamp();
+
+        TimeSpan elapsed = time.GetElapsedTime(start, end);
+
+        elapsed.Should().BeCloseTo(TimeSpan.FromSeconds(0.123), TimeSpan.FromMilliseconds(50));
+    }
+
     protected abstract ITimeProvider Init();
 
     protected abstract void Wait(ITimeProvider provider, TimeSpan duration);

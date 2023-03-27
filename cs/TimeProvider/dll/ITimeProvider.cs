@@ -9,4 +9,8 @@ public interface ITimeProvider
     DateTimeOffset UtcNow { get; }
 
     TimeZoneInfo LocalTimeZone { get; }
+
+    long GetTimestamp();
+
+    long TimestampFrequency { get; }
 }
