@@ -1,6 +1,7 @@
 // Copyright (c) Brian Rogers. All rights reserved.
 
 using System;
+using System.Threading;
 using FluentAssertions;
 using TimeProvider.Extensions;
 using Xunit;
@@ -38,6 +39,17 @@ public abstract class TimeProviderTest
         TimeSpan elapsed = time.GetElapsedTime(start, end);
 
         elapsed.Should().BeCloseTo(TimeSpan.FromSeconds(0.123), TimeSpan.FromMilliseconds(50));
+    }
+
+    [Fact]
+    public void TimerImmediateNonPeriodic()
+    {
+        var evt = new CountdownEvent(1);
+        ITimeProvider time = Init();
+
+        using ITimer timer = time.CreateTimer(o => evt.Signal(int.Parse(o?.ToString() ?? "-1")), "1", TimeSpan.Zero, TimeSpan.Zero);
+
+        evt.Wait(TimeSpan.FromMilliseconds(100)).Should().BeTrue();
     }
 
     protected abstract ITimeProvider Init();
