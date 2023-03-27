@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.Build.Traversal">
+  <ItemGroup>
+    <ProjectReference Include="dll\TimeProvider.Core.csproj" />
+    <ProjectReference Include="tests\TimeProvider.Tests.csproj" />
+  </ItemGroup>
+</Project>

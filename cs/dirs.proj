@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.Build.Traversal">
   <ItemGroup>
+    <ProjectReference Include="TimeProvider\dirs.proj" />
     <ProjectReference Include="ZzzTemplate\dirs.proj" />
   </ItemGroup>
 </Project>
