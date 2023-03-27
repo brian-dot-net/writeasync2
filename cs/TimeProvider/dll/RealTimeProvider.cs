@@ -28,5 +28,7 @@ public sealed class RealTimeProvider : ITimeProvider
         }
 
         public void Dispose() => _timer.Dispose();
+
+        public bool Change(TimeSpan dueTime, TimeSpan period) => _timer.Change(dueTime, period);
     }
 }

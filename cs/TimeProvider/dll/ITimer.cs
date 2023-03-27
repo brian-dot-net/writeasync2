@@ -6,4 +6,5 @@ namespace TimeProvider;
 
 public interface ITimer : IDisposable
 {
+    bool Change(TimeSpan dueTime, TimeSpan period);
 }

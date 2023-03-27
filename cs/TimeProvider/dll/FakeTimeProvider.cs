@@ -8,7 +8,6 @@ namespace TimeProvider;
 public sealed class FakeTimeProvider : ITimeProvider
 {
     private FakeTimer? _timer;
-    private DateTimeOffset _deadline;
 
     public FakeTimeProvider(DateTimeOffset utcNow, TimeZoneInfo localZone)
     {
@@ -26,8 +25,7 @@ public sealed class FakeTimeProvider : ITimeProvider
 
     public ITimer CreateTimer(TimerCallback callback, object? state, TimeSpan dueTime, TimeSpan period)
     {
-        _timer = new FakeTimer(callback, state, period);
-        _deadline = UtcNow + dueTime;
+        _timer = new FakeTimer(this, callback, state, dueTime, period);
         Wait(TimeSpan.Zero);
 
         return _timer;
@@ -47,13 +45,11 @@ public sealed class FakeTimeProvider : ITimeProvider
         DateTimeOffset next = UtcNow + duration;
         FakeTimer? timer = GetTimer();
 
-        if (timer is not null && next >= _deadline)
+        if (timer is not null && next >= timer.Deadline)
         {
-            next = _deadline;
-            UtcNow = next;
+            UtcNow = timer.Deadline;
             timer.Fire();
-            _deadline += timer.Period;
-            return next - _deadline;
+            return next - UtcNow;
         }
 
         UtcNow = next;
@@ -72,22 +68,44 @@ public sealed class FakeTimeProvider : ITimeProvider
 
     private sealed class FakeTimer : ITimer
     {
+        private readonly ITimeProvider _parent;
         private readonly TimerCallback _callback;
         private readonly object? _state;
 
-        public FakeTimer(TimerCallback callback, object? state, TimeSpan period)
+        public FakeTimer(ITimeProvider parent, TimerCallback callback, object? state, TimeSpan dueTime, TimeSpan period)
         {
+            _parent = parent;
             _callback = callback;
             _state = state;
-            Period = period;
+            _ = Change(dueTime, period);
         }
 
-        public TimeSpan Period { get; }
+        public TimeSpan Period { get; private set; }
+
+        public DateTimeOffset Deadline { get; private set; }
 
         public bool IsDisposed { get; private set; }
 
         public void Dispose() => IsDisposed = true;
 
-        public void Fire() => _callback(_state);
+        public bool Change(TimeSpan dueTime, TimeSpan period)
+        {
+            Period = period;
+            Deadline = _parent.UtcNow + dueTime;
+            return true;
+        }
+
+        public void Fire()
+        {
+            _callback(_state);
+            if (Period > TimeSpan.Zero)
+            {
+                Deadline += Period;
+            }
+            else
+            {
+                Deadline = DateTimeOffset.MaxValue;
+            }
+        }
     }
 }
