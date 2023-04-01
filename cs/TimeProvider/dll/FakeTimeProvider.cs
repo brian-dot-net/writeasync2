@@ -36,25 +36,38 @@ public sealed class FakeTimeProvider : ITimeProvider
     {
         do
         {
-            duration = WaitNext(duration);
+            duration = WaitMany(duration);
         }
         while (duration > TimeSpan.Zero);
     }
 
-    private TimeSpan WaitNext(TimeSpan duration)
+    private TimeSpan WaitMany(TimeSpan duration)
     {
-        DateTimeOffset next = UtcNow + duration;
-        FakeTimer? timer = GetTimer();
-
-        if (timer is not null && next >= timer.Deadline)
+        DateTimeOffset nextTime = UtcNow + duration;
+        if (!FireMany(nextTime))
         {
-            UtcNow = timer.Deadline;
-            timer.Fire();
-            return next - UtcNow;
+            UtcNow = nextTime;
         }
 
-        UtcNow = next;
-        return TimeSpan.Zero;
+        return nextTime - UtcNow;
+    }
+
+    private bool FireMany(DateTimeOffset nextTime)
+    {
+        bool fired = false;
+        IList<FakeTimer> timers = GetTimers(nextTime);
+        foreach (FakeTimer timer in timers)
+        {
+            if (!timer.IsDisposed)
+            {
+                fired = true;
+                UtcNow = timer.Deadline;
+                timer.Fire();
+                _ = InsertTimer(timer);
+            }
+        }
+
+        return fired;
     }
 
     private FakeTimer InsertTimer(FakeTimer timer)
@@ -73,22 +86,28 @@ public sealed class FakeTimeProvider : ITimeProvider
         return _timers.AddLast(timer).Value;
     }
 
-    private FakeTimer? GetTimer()
+    private IList<FakeTimer> GetTimers(DateTimeOffset nextTime)
     {
+        var timers = new List<FakeTimer>();
         LinkedListNode<FakeTimer>? node = _timers.First;
-        if (node is null)
+        while (node is not null)
         {
-            return null;
+            LinkedListNode<FakeTimer>? next = node.Next;
+            FakeTimer timer = node.Value;
+            if (node.Value.Deadline <= nextTime)
+            {
+                timers.Add(timer);
+                _timers.Remove(node);
+            }
+            else
+            {
+                next = null;
+            }
+
+            node = next;
         }
 
-        FakeTimer? timer = node.Value;
-        if (timer.IsDisposed)
-        {
-            _timers.Remove(node);
-            timer = null;
-        }
-
-        return timer;
+        return timers;
     }
 
     private sealed class FakeTimer : ITimer

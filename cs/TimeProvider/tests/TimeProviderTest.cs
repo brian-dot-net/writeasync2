@@ -146,6 +146,36 @@ public abstract class TimeProviderTest
         evt.CurrentCount.Should().Be(8);
     }
 
+    [Fact]
+    public void TwoAlternatingTimers()
+    {
+        var evt = new CountdownEvent(20);
+        ITimeProvider time = Init();
+
+        // |....1.2..|....1.2..|....1.2..
+        // |         |         |
+        // 0 ms      100 ms    200 ms
+        using ITimer timer1 = time.CreateTimer(o => evt.Signal(int.Parse(o?.ToString() ?? "-1")), "1", TimeSpan.FromMilliseconds(50), TimeSpan.FromMilliseconds(100));
+        using (ITimer timer2 = time.CreateTimer(o => evt.Signal(int.Parse(o?.ToString() ?? "-1")), "2", TimeSpan.FromMilliseconds(70), TimeSpan.FromMilliseconds(100)))
+        {
+            Wait(time, TimeSpan.FromMilliseconds(100));
+
+            evt.CurrentCount.Should().Be(17);
+
+            Wait(time, TimeSpan.FromMilliseconds(100));
+
+            evt.CurrentCount.Should().Be(14);
+        }
+
+        Wait(time, TimeSpan.FromMilliseconds(100));
+
+        evt.CurrentCount.Should().BeOneOf(11, 13);
+
+        Wait(time, TimeSpan.FromMilliseconds(100));
+
+        evt.CurrentCount.Should().BeOneOf(10, 12);
+    }
+
     protected abstract ITimeProvider Init();
 
     protected abstract void Wait(ITimeProvider provider, TimeSpan duration);
