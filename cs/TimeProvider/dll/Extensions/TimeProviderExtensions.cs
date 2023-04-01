@@ -14,7 +14,7 @@ public static class TimeProviderExtensions
 
     public static TimeSpan GetElapsedTime(this ITimeProvider provider, long startingTimestamp, long endingTimestamp) => new(TicksPerSecond * (endingTimestamp - startingTimestamp) / provider.TimestampFrequency);
 
-    public static async Task WaitAsync(this ITimeProvider provider, TimeSpan duration, CancellationToken token)
+    public static async Task WaitAsync(this ITimeProvider provider, TimeSpan duration, CancellationToken token = default)
     {
         var tcs = new TaskCompletionSource();
         using ITimer timer = provider.CreateTimer(o => ((TaskCompletionSource)o!).SetResult(), tcs, duration, TimeSpan.Zero);

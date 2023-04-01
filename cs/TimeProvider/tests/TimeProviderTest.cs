@@ -239,6 +239,20 @@ public abstract class TimeProviderTest
         task.IsCanceled.Should().BeTrue();
     }
 
+    [Fact]
+    public void WaitUntilDuration()
+    {
+        ITimeProvider time = Init();
+
+        Task task = time.WaitAsync(TimeSpan.FromMilliseconds(20));
+
+        task.IsCompleted.Should().BeFalse();
+
+        Wait(time, TimeSpan.FromMilliseconds(50));
+
+        task.IsCompletedSuccessfully.Should().BeTrue();
+    }
+
     protected abstract ITimeProvider Init();
 
     protected abstract void Wait(ITimeProvider provider, TimeSpan duration);
