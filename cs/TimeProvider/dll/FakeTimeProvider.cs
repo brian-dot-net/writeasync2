@@ -1,18 +1,20 @@
 // Copyright (c) Brian Rogers. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace TimeProvider;
 
 public sealed class FakeTimeProvider : ITimeProvider
 {
-    private FakeTimer? _timer;
+    private readonly LinkedList<FakeTimer> _timers;
 
     public FakeTimeProvider(DateTimeOffset utcNow, TimeZoneInfo localZone)
     {
         UtcNow = utcNow;
         LocalTimeZone = localZone;
+        _timers = new LinkedList<FakeTimer>();
     }
 
     public DateTimeOffset UtcNow { get; private set; }
@@ -25,10 +27,9 @@ public sealed class FakeTimeProvider : ITimeProvider
 
     public ITimer CreateTimer(TimerCallback callback, object? state, TimeSpan dueTime, TimeSpan period)
     {
-        _timer = new FakeTimer(this, callback, state, dueTime, period);
+        FakeTimer timer = InsertTimer(new(this, callback, state, dueTime, period));
         Wait(TimeSpan.Zero);
-
-        return _timer;
+        return timer;
     }
 
     public void Wait(TimeSpan duration)
@@ -56,14 +57,38 @@ public sealed class FakeTimeProvider : ITimeProvider
         return TimeSpan.Zero;
     }
 
-    private FakeTimer? GetTimer()
+    private FakeTimer InsertTimer(FakeTimer timer)
     {
-        if (_timer is not null && _timer.IsDisposed)
+        LinkedListNode<FakeTimer>? node = _timers.First;
+        while (node is not null)
         {
-            _timer = null;
+            if (node.Value.Deadline >= timer.Deadline)
+            {
+                return _timers.AddBefore(node, timer).Value;
+            }
+
+            node = node.Next;
         }
 
-        return _timer;
+        return _timers.AddLast(timer).Value;
+    }
+
+    private FakeTimer? GetTimer()
+    {
+        LinkedListNode<FakeTimer>? node = _timers.First;
+        if (node is null)
+        {
+            return null;
+        }
+
+        FakeTimer? timer = node.Value;
+        if (timer.IsDisposed)
+        {
+            _timers.Remove(node);
+            timer = null;
+        }
+
+        return timer;
     }
 
     private sealed class FakeTimer : ITimer
