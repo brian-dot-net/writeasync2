@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using FluentAssertions;
 using TimeProvider.Extensions;
 using Xunit;
@@ -221,6 +222,21 @@ public abstract class TimeProviderTest
 
         times.Select(t => t.Item1).Should().HaveCount(5).And.ContainInOrder("3", "2", "1", "3", "1");
         times.Select(t => t.Item2).Should().BeInAscendingOrder();
+    }
+
+    [Fact]
+    public void WaitUntilCanceled()
+    {
+        ITimeProvider time = Init();
+        using var cts = new CancellationTokenSource();
+
+        Task task = time.WaitAsync(Timeout.InfiniteTimeSpan, cts.Token);
+
+        task.IsCompleted.Should().BeFalse();
+
+        cts.Cancel();
+
+        task.IsCanceled.Should().BeTrue();
     }
 
     protected abstract ITimeProvider Init();
