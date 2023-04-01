@@ -17,8 +17,8 @@ public static class TimeProviderExtensions
     public static async Task WaitAsync(this ITimeProvider provider, TimeSpan duration, CancellationToken token = default)
     {
         var tcs = new TaskCompletionSource();
-        using ITimer timer = provider.CreateTimer(o => ((TaskCompletionSource)o!).SetResult(), tcs, duration, TimeSpan.Zero);
-        using CancellationTokenRegistration reg = token.Register((o, t) => ((TaskCompletionSource)o!).SetCanceled(t), tcs);
+        using ITimer timer = provider.CreateTimer(o => ((TaskCompletionSource)o!).TrySetResult(), tcs, duration, TimeSpan.Zero);
+        using CancellationTokenRegistration reg = token.Register((o, t) => ((TaskCompletionSource)o!).TrySetCanceled(t), tcs);
         await tcs.Task;
     }
 }

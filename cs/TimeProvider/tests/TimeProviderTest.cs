@@ -253,6 +253,23 @@ public abstract class TimeProviderTest
         task.IsCompletedSuccessfully.Should().BeTrue();
     }
 
+    [Fact]
+    public void WaitRacesWithCanceled()
+    {
+        ITimeProvider time = Init();
+        using var cts = new CancellationTokenSource();
+
+        using ITimer timer = time.CreateTimer(o => ((CancellationTokenSource)o!).Cancel(), cts, TimeSpan.FromMilliseconds(70), TimeSpan.Zero);
+        Task task = time.WaitAsync(TimeSpan.FromMilliseconds(70), cts.Token);
+
+        task.IsCompleted.Should().BeFalse();
+
+        Wait(time, TimeSpan.FromMilliseconds(100));
+
+        task.IsFaulted.Should().BeFalse();
+        task.IsCompleted.Should().BeTrue();
+    }
+
     protected abstract ITimeProvider Init();
 
     protected abstract void Wait(ITimeProvider provider, TimeSpan duration);
