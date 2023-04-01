@@ -270,6 +270,24 @@ public abstract class TimeProviderTest
         task.IsCompleted.Should().BeTrue();
     }
 
+    [Fact]
+    public void AsyncDispose()
+    {
+        ITimeProvider time = Init();
+        var evt = new CountdownEvent(20);
+
+        ITimer timer = time.CreateTimer(o => ((CountdownEvent)o!).Signal(), evt, TimeSpan.FromMilliseconds(40), TimeSpan.FromMilliseconds(1));
+
+        Wait(time, TimeSpan.FromMilliseconds(50));
+
+        ValueTask task = timer.DisposeAsync();
+
+        Wait(time, TimeSpan.FromMilliseconds(5));
+
+        task.IsCompletedSuccessfully.Should().BeTrue();
+        evt.CurrentCount.Should().BeGreaterThan(0);
+    }
+
     protected abstract ITimeProvider Init();
 
     protected abstract void Wait(ITimeProvider provider, TimeSpan duration);

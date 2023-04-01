@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace TimeProvider;
 
@@ -28,6 +29,8 @@ public sealed class RealTimeProvider : ITimeProvider
         }
 
         public void Dispose() => _timer.Dispose();
+
+        public ValueTask DisposeAsync() => _timer.DisposeAsync();
 
         public bool Change(TimeSpan dueTime, TimeSpan period) => _timer.Change(dueTime, period);
     }

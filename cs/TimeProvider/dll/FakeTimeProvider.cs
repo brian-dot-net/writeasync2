@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace TimeProvider;
 
@@ -115,6 +116,12 @@ public sealed class FakeTimeProvider : ITimeProvider
         public bool IsDisposed { get; private set; }
 
         public void Dispose() => IsDisposed = true;
+
+        public ValueTask DisposeAsync()
+        {
+            Dispose();
+            return default;
+        }
 
         public bool Change(TimeSpan dueTime, TimeSpan period)
         {

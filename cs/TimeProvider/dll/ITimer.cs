@@ -4,7 +4,7 @@ using System;
 
 namespace TimeProvider;
 
-public interface ITimer : IDisposable
+public interface ITimer : IDisposable, IAsyncDisposable
 {
     bool Change(TimeSpan dueTime, TimeSpan period);
 }
