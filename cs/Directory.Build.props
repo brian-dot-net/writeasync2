@@ -7,11 +7,29 @@
   </PropertyGroup>
   <!-- Read-only source tree -->
   <PropertyGroup>
-    <BinariesFolder>$(MSBuildThisFileDirectory)bin</BinariesFolder>
-    <CommonIntermediateOutputRoot>$(MSBuildThisFileDirectory)obj\</CommonIntermediateOutputRoot>
-    <BaseIntermediateOutputPath>$(CommonIntermediateOutputRoot)$(Configuration)\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
-    <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <OutputPath>$(BinariesFolder)\$(Configuration)\$(MSBuildProjectName)\</OutputPath>
-    <OutDir>$(OutputPath)</OutDir>
+    <RootOutputPath>$(MSBuildThisFileDirectory)</RootOutputPath>
+    <!--
+      Base output path has flattened folder structure. Examples:
+
+        Project: MyLib\dll\MyLib.Core.csproj
+        Output:  bin\MyLib.Core
+
+        Project: MyApp\exe\MyApp.csproj
+        Output:  bin\MyApp
+    -->
+    <RootBinPath>$(RootOutputPath)bin\</RootBinPath>
+    <BaseOutputPath>$(RootBinPath)$(MSBuildProjectName)\</BaseOutputPath>
+    <!--
+      Base intermediate output path has same folder structure as source. Examples:
+
+        Project: MyLib\dll\MyLib.Core.csproj
+        Output:  obj\MyLib\dll\obj
+
+        Project: MyApp\exe\MyApp.csproj
+        Output:  obj\MyApp\exe\obj
+    -->
+    <RootObjPath>$(RootOutputPath)obj\</RootObjPath>
+    <RelativeProjectDir>$([MSBuild]::MakeRelative($(RootOutputPath), $(MSBuildProjectDirectory)))</RelativeProjectDir>
+    <BaseIntermediateOutputPath>$(RootObjPath)$(RelativeProjectDir)\obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
 </Project>
