@@ -176,6 +176,29 @@ public abstract class TimeProviderTest
         evt.CurrentCount.Should().BeOneOf(10, 12);
     }
 
+    [Fact]
+    public void TwoTimersFireManyDuringInterval()
+    {
+        var evt = new CountdownEvent(20);
+        ITimeProvider time = Init();
+
+        // |.1...1...1...1...1.|
+        // | 2 2 2 2 2         |
+        // |         |         |
+        // 0 ms      100 ms    200 ms
+        using ITimer timer1 = time.CreateTimer(o => evt.Signal(int.Parse(o?.ToString() ?? "-1")), "1", TimeSpan.FromMilliseconds(20), TimeSpan.FromMilliseconds(40));
+        using (ITimer timer2 = time.CreateTimer(o => evt.Signal(int.Parse(o?.ToString() ?? "-1")), "2", TimeSpan.FromMilliseconds(20), TimeSpan.FromMilliseconds(20)))
+        {
+            Wait(time, TimeSpan.FromMilliseconds(100));
+
+            evt.CurrentCount.Should().BeInRange(7, 10);
+        }
+
+        Wait(time, TimeSpan.FromMilliseconds(100));
+
+        evt.CurrentCount.Should().BeInRange(3, 7);
+    }
+
     protected abstract ITimeProvider Init();
 
     protected abstract void Wait(ITimeProvider provider, TimeSpan duration);

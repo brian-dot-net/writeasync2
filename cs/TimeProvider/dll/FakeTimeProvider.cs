@@ -36,38 +36,27 @@ public sealed class FakeTimeProvider : ITimeProvider
     {
         do
         {
-            duration = WaitMany(duration);
+            duration = WaitNext(duration);
         }
         while (duration > TimeSpan.Zero);
     }
 
-    private TimeSpan WaitMany(TimeSpan duration)
+    private TimeSpan WaitNext(TimeSpan duration)
     {
         DateTimeOffset nextTime = UtcNow + duration;
-        if (!FireMany(nextTime))
+        FakeTimer? next = GetTimer(nextTime);
+        if (next is null)
         {
             UtcNow = nextTime;
         }
-
-        return nextTime - UtcNow;
-    }
-
-    private bool FireMany(DateTimeOffset nextTime)
-    {
-        bool fired = false;
-        IList<FakeTimer> timers = GetTimers(nextTime);
-        foreach (FakeTimer timer in timers)
+        else if (!next.IsDisposed)
         {
-            if (!timer.IsDisposed)
-            {
-                fired = true;
-                UtcNow = timer.Deadline;
-                timer.Fire();
-                _ = InsertTimer(timer);
-            }
+            UtcNow = next.Deadline;
+            next.Fire();
+            _ = InsertTimer(next);
         }
 
-        return fired;
+        return nextTime - UtcNow;
     }
 
     private FakeTimer InsertTimer(FakeTimer timer)
@@ -86,9 +75,8 @@ public sealed class FakeTimeProvider : ITimeProvider
         return _timers.AddLast(timer).Value;
     }
 
-    private IList<FakeTimer> GetTimers(DateTimeOffset nextTime)
+    private FakeTimer? GetTimer(DateTimeOffset nextTime)
     {
-        var timers = new List<FakeTimer>();
         LinkedListNode<FakeTimer>? node = _timers.First;
         while (node is not null)
         {
@@ -96,18 +84,14 @@ public sealed class FakeTimeProvider : ITimeProvider
             FakeTimer timer = node.Value;
             if (node.Value.Deadline <= nextTime)
             {
-                timers.Add(timer);
                 _timers.Remove(node);
-            }
-            else
-            {
-                next = null;
+                return timer;
             }
 
             node = next;
         }
 
-        return timers;
+        return null;
     }
 
     private sealed class FakeTimer : ITimer
