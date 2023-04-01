@@ -123,6 +123,29 @@ public abstract class TimeProviderTest
         evt.CurrentCount.Should().BeInRange(7, 8);
     }
 
+    [Fact]
+    public void TimerChangeFromDisabledToPeriodic()
+    {
+        var evt = new CountdownEvent(10);
+        ITimeProvider time = Init();
+
+        using ITimer timer = time.CreateTimer(o => evt.Signal(int.Parse(o?.ToString() ?? "-1")), "1", Timeout.InfiniteTimeSpan, TimeSpan.Zero);
+
+        Wait(time, TimeSpan.FromMilliseconds(50));
+
+        evt.CurrentCount.Should().Be(10);
+
+        timer.Change(TimeSpan.FromMilliseconds(20), TimeSpan.FromMilliseconds(50)).Should().BeTrue();
+
+        Wait(time, TimeSpan.FromMilliseconds(50));
+
+        evt.CurrentCount.Should().Be(9);
+
+        Wait(time, TimeSpan.FromMilliseconds(50));
+
+        evt.CurrentCount.Should().Be(8);
+    }
+
     protected abstract ITimeProvider Init();
 
     protected abstract void Wait(ITimeProvider provider, TimeSpan duration);

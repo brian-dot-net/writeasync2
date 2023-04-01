@@ -91,7 +91,7 @@ public sealed class FakeTimeProvider : ITimeProvider
         public bool Change(TimeSpan dueTime, TimeSpan period)
         {
             Period = period;
-            Deadline = _parent.UtcNow + dueTime;
+            Deadline = dueTime >= TimeSpan.Zero ? _parent.UtcNow + dueTime : DateTimeOffset.MaxValue;
             return true;
         }
 
