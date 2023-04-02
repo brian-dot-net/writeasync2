@@ -1,6 +1,8 @@
 // Copyright (c) Brian Rogers. All rights reserved.
 
 using System;
+using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
 using FluentAssertions;
 using TimeProvider.Extensions;
@@ -197,6 +199,28 @@ public abstract class TimeProviderTest
         Wait(time, TimeSpan.FromMilliseconds(100));
 
         evt.CurrentCount.Should().BeInRange(3, 7);
+    }
+
+    [Fact]
+    public void MultipleTimersDifferentOrder()
+    {
+        var times = new BlockingCollection<(string, DateTimeOffset)>();
+        ITimeProvider time = Init();
+
+        // |.3..2..1.|.3..1....|
+        // |         |         |
+        // 0 ms      100 ms    200 ms
+        using (ITimer timer1 = time.CreateTimer(o => times.Add(((string?)o ?? "-1", time.UtcNow)), "1", TimeSpan.FromMilliseconds(80), TimeSpan.FromMilliseconds(70)))
+        using (ITimer timer2 = time.CreateTimer(o => times.Add(((string?)o ?? "-1", time.UtcNow)), "2", TimeSpan.FromMilliseconds(50), TimeSpan.FromMilliseconds(150)))
+        using (ITimer timer3 = time.CreateTimer(o => times.Add(((string?)o ?? "-1", time.UtcNow)), "3", TimeSpan.FromMilliseconds(20), TimeSpan.FromMilliseconds(100)))
+        {
+            Wait(time, TimeSpan.FromMilliseconds(170));
+        }
+
+        times.CompleteAdding();
+
+        times.Select(t => t.Item1).Should().HaveCount(5).And.ContainInOrder("3", "2", "1", "3", "1");
+        times.Select(t => t.Item2).Should().BeInAscendingOrder();
     }
 
     protected abstract ITimeProvider Init();
