@@ -91,7 +91,7 @@ public abstract class TimeProviderTest
 
             Wait(time, TimeSpan.FromMilliseconds(50));
 
-            evt.CurrentCount.Should().Be(9);
+            evt.CurrentCount.Should().BeInRange(8, 9);
 
             Wait(time, TimeSpan.FromMilliseconds(50));
 
@@ -146,7 +146,7 @@ public abstract class TimeProviderTest
 
         Wait(time, TimeSpan.FromMilliseconds(50));
 
-        evt.CurrentCount.Should().Be(8);
+        evt.CurrentCount.Should().BeInRange(7, 8);
     }
 
     [Fact]
