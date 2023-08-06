@@ -13,4 +13,6 @@ public record Move(int I1, int I2, char Op)
             (I1 >= 0) &&
             (I2 >= 0);
     }
+
+    public override string ToString() => $"[{I2}]{Op}[{I1}]";
 }
