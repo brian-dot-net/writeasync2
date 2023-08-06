@@ -24,14 +24,11 @@ public sealed class Board
             return Invalid;
         }
 
-        int result = op switch
+        int result = Calculate(n1, n2, op);
+        if (result < 0)
         {
-            '+' => _numbers[n2] + _numbers[n1],
-            '-' => _numbers[n2] - _numbers[n1],
-            '*' => _numbers[n2] * _numbers[n1],
-            '/' => _numbers[n2] / _numbers[n1],
-            _ => throw new NotImplementedException()
-        };
+            return Invalid;
+        }
 
         var numbers = new List<int> { result };
         for (int i = 0; i < _numbers.Length; i++)
@@ -48,4 +45,24 @@ public sealed class Board
     }
 
     public override string ToString() => string.Join(',', _numbers);
+
+    private int Calculate(int n1, int n2, char op)
+    {
+        return op switch
+        {
+            '+' => _numbers[n2] + _numbers[n1],
+            '-' => _numbers[n2] - _numbers[n1],
+            '*' => _numbers[n2] * _numbers[n1],
+            '/' => Divide(n1, n2),
+            _ => throw new NotImplementedException()
+        };
+    }
+
+    private int Divide(int n1, int n2)
+    {
+        int d1 = _numbers[n2];
+        int d2 = _numbers[n1];
+        (int div, int rem) = Math.DivRem(d1, d2);
+        return rem == 0 ? div : -1;
+    }
 }
