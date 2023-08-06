@@ -8,6 +8,8 @@ namespace Digits;
 
 public sealed class Board
 {
+    private static readonly Board Invalid = new(Enumerable.Empty<int>());
+
     private readonly int[] _numbers;
 
     public Board(IEnumerable<int> numbers)
@@ -17,6 +19,11 @@ public sealed class Board
 
     public Board Move(int n1, int n2, char op)
     {
+        if (n1 == n2)
+        {
+            return Invalid;
+        }
+
         int result = op switch
         {
             '+' => _numbers[n2] + _numbers[n1],

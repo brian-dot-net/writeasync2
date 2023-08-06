@@ -28,4 +28,15 @@ public sealed class BoardTest
 
         board2.ToString().Should().Be(result);
     }
+
+    [Theory]
+    [InlineData(0, 0, '+', "")]
+    public void MoveInvalid(int n1, int n2, char op, string result)
+    {
+        Board board1 = new(new[] { 1, 2, 4, 8, 16, 25 });
+
+        Board board2 = board1.Move(n1, n2, op);
+
+        board2.ToString().Should().Be(result);
+    }
 }
