@@ -33,6 +33,15 @@ public sealed class SolverTest
         solutions.Should().BeEmpty();
     }
 
+    [Fact]
+    public void DirectSolution2()
+    {
+        IList<string> solutions = Solve(3, new[] { 2, 3 });
+
+        solutions.Should().HaveCount(1).And.ContainInOrder(
+            string.Empty);
+    }
+
     private static IList<string> Solve(int target, int[] numbers)
     {
         var solver = new Solver(target, new Board(numbers));
