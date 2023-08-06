@@ -32,6 +32,7 @@ public sealed class BoardTest
     [Theory]
     [InlineData(0, 0, '+', "")]
     [InlineData(1, 10, '-', "")]
+    [InlineData(6, 1, '*', "")]
     public void MoveInvalid(int n1, int n2, char op, string result)
     {
         Board board1 = new(new[] { 1, 2, 4, 8, 16, 25 });
