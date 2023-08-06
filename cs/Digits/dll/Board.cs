@@ -58,7 +58,7 @@ public sealed class Board
             '-' => n2 - n1,
             '*' => n2 * n1,
             '/' => Divide(n2, n1),
-            _ => throw new NotImplementedException()
+            _ => InvalidNumber,
         };
     }
 
