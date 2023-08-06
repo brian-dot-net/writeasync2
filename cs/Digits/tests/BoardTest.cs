@@ -24,7 +24,7 @@ public sealed class BoardTest
     {
         Board board1 = new(new[] { 1, 2, 5, 10, 20, 50 });
 
-        Board board2 = board1.Move(n1, n2, op);
+        Board board2 = board1.TryMove(n1, n2, op);
 
         board2.ToString().Should().Be(result);
         board2.IsValid.Should().BeTrue();
@@ -42,7 +42,7 @@ public sealed class BoardTest
     {
         Board board1 = new(new[] { 0, 2, 4, 8, 16, 25 });
 
-        Board board2 = board1.Move(n1, n2, op);
+        Board board2 = board1.TryMove(n1, n2, op);
 
         board2.ToString().Should().Be(result);
         board2.IsValid.Should().BeFalse();

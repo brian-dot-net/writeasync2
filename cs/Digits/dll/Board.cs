@@ -21,7 +21,7 @@ public sealed class Board
 
     public bool IsValid => _numbers.Length > 0;
 
-    public Board Move(int n1, int n2, char op)
+    public Board TryMove(int n1, int n2, char op)
     {
         if (n1 == n2 || (n1 < 0) || (n1 >= _numbers.Length) || (n2 < 0) || (n2 >= _numbers.Length))
         {
