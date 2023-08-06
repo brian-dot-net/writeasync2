@@ -23,7 +23,7 @@ public sealed class Board
 
     public Board TryMove(Move move)
     {
-        if (move.I1 == move.I2 || (move.I1 < 0) || (move.I1 >= _numbers.Length) || (move.I2 < 0) || (move.I2 >= _numbers.Length))
+        if (!move.IsInRange(_numbers.Length))
         {
             return Invalid;
         }

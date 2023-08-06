@@ -2,4 +2,15 @@
 
 namespace Digits;
 
-public record Move(int I1, int I2, char Op);
+public record Move(int I1, int I2, char Op)
+{
+    public bool IsInRange(int length)
+    {
+        return
+            (I1 != I2) &&
+            (I1 < length) &&
+            (I2 < length) &&
+            (I1 >= 0) &&
+            (I2 >= 0);
+    }
+}
