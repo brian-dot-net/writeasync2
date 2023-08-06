@@ -32,7 +32,7 @@ public sealed class Board
             return Invalid;
         }
 
-        int result = Calculate(_numbers[move.I1], _numbers[move.I2], move.Op);
+        int result = Calculate(move);
         if (result == InvalidNumber)
         {
             return Invalid;
@@ -54,9 +54,13 @@ public sealed class Board
 
     public override string ToString() => string.Join(',', _numbers);
 
-    private int Calculate(int n1, int n2, char op)
+    public string ToString(Move move) => $"{_numbers[move.I2]} {move.Op} {_numbers[move.I1]} = {Calculate(move)}";
+
+    private int Calculate(Move move)
     {
-        return op switch
+        int n1 = _numbers[move.I1];
+        int n2 = _numbers[move.I2];
+        return move.Op switch
         {
             Ops.Add => n2 + n1,
             Ops.Subtract => n2 - n1,

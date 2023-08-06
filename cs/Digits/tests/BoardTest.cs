@@ -15,6 +15,14 @@ public sealed class BoardTest
         board.ToString().Should().Be("1,2,3,4,5,6");
     }
 
+    [Fact]
+    public void ToStringShowsMove()
+    {
+        var board = new Board(new[] { 1, 2, 3, 4, 5, 6 });
+
+        board.ToString(new Move(2, 4, '*')).Should().Be("5 * 3 = 15");
+    }
+
     [Theory]
     [InlineData(0, 1, Ops.Add, "3,5,10,20,50")]
     [InlineData(1, 2, Ops.Subtract, "1,3,10,20,50")]
