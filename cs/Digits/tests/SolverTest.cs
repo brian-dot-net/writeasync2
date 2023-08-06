@@ -42,6 +42,15 @@ public sealed class SolverTest
             string.Empty);
     }
 
+    [Fact]
+    public void OneSolution2()
+    {
+        IList<string> solutions = Solve(6, new[] { 2, 3 });
+
+        solutions.Should().HaveCount(1).And.ContainInOrder(
+            "[1]*[0]");
+    }
+
     private static IList<string> Solve(int target, int[] numbers)
     {
         var solver = new Solver(target, new Board(numbers));
