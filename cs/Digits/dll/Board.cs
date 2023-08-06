@@ -21,14 +21,14 @@ public sealed class Board
 
     public bool IsValid => _numbers.Length > 0;
 
-    public Board TryMove(int n1, int n2, char op)
+    public Board TryMove(Move move)
     {
-        if (n1 == n2 || (n1 < 0) || (n1 >= _numbers.Length) || (n2 < 0) || (n2 >= _numbers.Length))
+        if (move.I1 == move.I2 || (move.I1 < 0) || (move.I1 >= _numbers.Length) || (move.I2 < 0) || (move.I2 >= _numbers.Length))
         {
             return Invalid;
         }
 
-        int result = Calculate(n1, n2, op);
+        int result = Calculate(_numbers[move.I1], _numbers[move.I2], move.Op);
         if (result == InvalidNumber)
         {
             return Invalid;
@@ -37,7 +37,7 @@ public sealed class Board
         var numbers = new List<int> { result };
         for (int i = 0; i < _numbers.Length; i++)
         {
-            if (i != n1 && i != n2)
+            if (i != move.I1 && i != move.I2)
             {
                 numbers.Add(_numbers[i]);
             }
@@ -54,24 +54,22 @@ public sealed class Board
     {
         return op switch
         {
-            '+' => _numbers[n2] + _numbers[n1],
-            '-' => _numbers[n2] - _numbers[n1],
-            '*' => _numbers[n2] * _numbers[n1],
-            '/' => Divide(n1, n2),
+            '+' => n2 + n1,
+            '-' => n2 - n1,
+            '*' => n2 * n1,
+            '/' => Divide(n2, n1),
             _ => throw new NotImplementedException()
         };
     }
 
-    private int Divide(int n1, int n2)
+    private int Divide(int n, int d)
     {
-        int d1 = _numbers[n2];
-        int d2 = _numbers[n1];
-        if (d2 == 0)
+        if (d == 0)
         {
             return InvalidNumber;
         }
 
-        (int div, int rem) = Math.DivRem(d1, d2);
+        (int div, int rem) = Math.DivRem(n, d);
         return rem == 0 ? div : InvalidNumber;
     }
 }
