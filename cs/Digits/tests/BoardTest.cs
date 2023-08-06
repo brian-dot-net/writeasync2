@@ -36,9 +36,10 @@ public sealed class BoardTest
     [InlineData(-1, 2, '/', "")]
     [InlineData(3, -1, '+', "")]
     [InlineData(4, 5, '/', "")]
+    [InlineData(0, 3, '/', "")]
     public void MoveInvalid(int n1, int n2, char op, string result)
     {
-        Board board1 = new(new[] { 1, 2, 4, 8, 16, 25 });
+        Board board1 = new(new[] { 0, 2, 4, 8, 16, 25 });
 
         Board board2 = board1.Move(n1, n2, op);
 

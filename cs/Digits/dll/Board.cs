@@ -8,6 +8,8 @@ namespace Digits;
 
 public sealed class Board
 {
+    private const int InvalidNumber = -1;
+
     private static readonly Board Invalid = new(Enumerable.Empty<int>());
 
     private readonly int[] _numbers;
@@ -25,7 +27,7 @@ public sealed class Board
         }
 
         int result = Calculate(n1, n2, op);
-        if (result < 0)
+        if (result == InvalidNumber)
         {
             return Invalid;
         }
@@ -62,7 +64,12 @@ public sealed class Board
     {
         int d1 = _numbers[n2];
         int d2 = _numbers[n1];
+        if (d2 == 0)
+        {
+            return InvalidNumber;
+        }
+
         (int div, int rem) = Math.DivRem(d1, d2);
-        return rem == 0 ? div : -1;
+        return rem == 0 ? div : InvalidNumber;
     }
 }
