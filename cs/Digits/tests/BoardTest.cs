@@ -27,6 +27,7 @@ public sealed class BoardTest
         Board board2 = board1.Move(n1, n2, op);
 
         board2.ToString().Should().Be(result);
+        board2.IsValid.Should().BeTrue();
     }
 
     [Theory]
@@ -44,5 +45,6 @@ public sealed class BoardTest
         Board board2 = board1.Move(n1, n2, op);
 
         board2.ToString().Should().Be(result);
+        board2.IsValid.Should().BeFalse();
     }
 }
