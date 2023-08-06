@@ -19,6 +19,7 @@ public sealed class BoardTest
     [InlineData(0, 1, '+', "3,5,10,20,50")]
     [InlineData(1, 2, '-', "1,3,10,20,50")]
     [InlineData(3, 4, '*', "1,2,5,50,200")]
+    [InlineData(1, 5, '/', "1,5,10,20,25")]
     public void MoveValid(int n1, int n2, char op, string result)
     {
         Board board1 = new(new[] { 1, 2, 5, 10, 20, 50 });

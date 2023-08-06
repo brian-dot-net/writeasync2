@@ -22,6 +22,7 @@ public sealed class Board
             '+' => _numbers[n2] + _numbers[n1],
             '-' => _numbers[n2] - _numbers[n1],
             '*' => _numbers[n2] * _numbers[n1],
+            '/' => _numbers[n2] / _numbers[n1],
             _ => throw new NotImplementedException()
         };
 
