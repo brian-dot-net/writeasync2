@@ -63,6 +63,15 @@ public sealed class SolverTest
             "[2]+[1];[1]+[0]");
     }
 
+    [Fact]
+    public void OneSolution3()
+    {
+        IList<string> solutions = Solve(575, new[] { 2, 23, 25 });
+
+        solutions.Should().HaveCount(1).And.ContainInOrder(
+            "[2]*[1]");
+    }
+
     private static IList<string> Solve(int target, int[] numbers)
     {
         var solver = new Solver(target, new Board(numbers));
