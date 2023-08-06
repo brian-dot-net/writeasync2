@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.Build.Traversal">
+  <ItemGroup>
+    <ProjectReference Include="dll\Digits.Core.csproj" />
+    <ProjectReference Include="exe\Digits.App.csproj" />
+    <ProjectReference Include="perf\Digits.Perf.csproj" />
+    <ProjectReference Include="tests\Digits.Tests.csproj" />
+  </ItemGroup>
+</Project>
