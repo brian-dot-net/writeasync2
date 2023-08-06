@@ -1,5 +1,6 @@
 // Copyright (c) Brian Rogers. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +13,26 @@ public sealed class Board
     public Board(IEnumerable<int> numbers)
     {
         _numbers = numbers.ToArray();
+    }
+
+    public Board Move(int n1, int n2, char op)
+    {
+        int result = op switch
+        {
+            '+' => _numbers[n1] + _numbers[n2],
+            _ => throw new NotImplementedException()
+        };
+
+        var numbers = new List<int> { result };
+        for (int i = 0; i < _numbers.Length; i++)
+        {
+            if (i != n1 && i != n2)
+            {
+                numbers.Add(_numbers[i]);
+            }
+        }
+
+        return new Board(numbers);
     }
 
     public override string ToString() => string.Join(',', _numbers);
