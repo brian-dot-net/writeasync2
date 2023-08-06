@@ -51,13 +51,27 @@ public sealed class SolverTest
             "[1]*[0]");
     }
 
+    [Fact]
+    public void FourSolutions3()
+    {
+        IList<string> solutions = Solve(7, new[] { 1, 2, 4 });
+
+        solutions.Should().HaveCount(4).And.ContainInOrder(
+            "[1]+[0];[1]+[0]",
+            "[2]*[1];[1]-[0]",
+            "[2]+[0];[1]+[0]",
+            "[2]+[1];[1]+[0]");
+    }
+
     private static IList<string> Solve(int target, int[] numbers)
     {
         var solver = new Solver(target, new Board(numbers));
-        var solutions = new List<IList<Move>>();
+        var results = new List<IList<Move>>();
 
-        solver.Solve(solutions.Add);
+        solver.Solve(results.Add);
 
-        return solutions.Select(ms => string.Join(';', ms)).ToList();
+        var solutions = results.Select(ms => string.Join(';', ms)).ToList();
+        solutions.Sort();
+        return solutions;
     }
 }
