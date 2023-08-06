@@ -19,7 +19,8 @@ public sealed class Board
     {
         int result = op switch
         {
-            '+' => _numbers[n1] + _numbers[n2],
+            '+' => _numbers[n2] + _numbers[n1],
+            '-' => _numbers[n2] - _numbers[n1],
             _ => throw new NotImplementedException()
         };
 
@@ -31,6 +32,8 @@ public sealed class Board
                 numbers.Add(_numbers[i]);
             }
         }
+
+        numbers.Sort();
 
         return new Board(numbers);
     }
