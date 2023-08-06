@@ -54,10 +54,10 @@ public sealed class Board
     {
         return op switch
         {
-            '+' => n2 + n1,
-            '-' => n2 - n1,
-            '*' => n2 * n1,
-            '/' => Divide(n2, n1),
+            Ops.Add => n2 + n1,
+            Ops.Subtract => n2 - n1,
+            Ops.Multiply => n2 * n1,
+            Ops.Divide => Divide(n2, n1),
             _ => InvalidNumber,
         };
     }

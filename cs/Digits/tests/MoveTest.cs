@@ -10,7 +10,7 @@ public sealed class MoveTest
     [Fact]
     public void ToStringShowsOps()
     {
-        var move = new Move(1, 2, '+');
+        var move = new Move(1, 2, Ops.Add);
 
         move.ToString().Should().Be("[2]+[1]");
     }
