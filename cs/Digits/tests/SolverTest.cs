@@ -17,6 +17,14 @@ public sealed class SolverTest
         solutions.Should().BeEmpty();
     }
 
+    [Fact]
+    public void NoSolution3()
+    {
+        IList<string> solutions = Solve(1000, new[] { 3, 4, 5 });
+
+        solutions.Should().BeEmpty();
+    }
+
     private static IList<string> Solve(int target, int[] numbers)
     {
         var solver = new Solver(target, new Board(numbers));
