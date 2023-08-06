@@ -72,6 +72,19 @@ public sealed class SolverTest
             "[2]*[1]");
     }
 
+    [Fact]
+    public void ManySolutions5()
+    {
+        IList<string> solutions = Solve(1500, new[] { 2, 4, 8, 16, 25 });
+
+        solutions.Should().HaveCount(5).And.ContainInOrder(
+            "[2]/[0];[2]*[0];[2]-[0];[1]*[0]",
+            "[2]/[0];[2]*[1];[2]-[0];[1]*[0]",
+            "[3]*[1];[1]/[0];[2]-[0];[1]*[0]",
+            "[3]*[2];[3]/[0];[2]-[0];[1]*[0]",
+            "[3]/[0];[2]*[1];[2]-[0];[1]*[0]");
+    }
+
     private static IList<string> Solve(int target, int[] numbers)
     {
         var solver = new Solver(target, new Board(numbers));
