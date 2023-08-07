@@ -35,4 +35,14 @@ public sealed class ArgsTest
         act.Should().Throw<FormatException>()
             .WithMessage("The value 'x' is not a valid integer.");
     }
+
+    [Fact]
+    public void ParseFailsNegative()
+    {
+        Action act = () => Args.Parse("-1", "2");
+
+        act.Should().Throw<ArgumentOutOfRangeException>()
+            .WithMessage("The value -1 was not greater than or equal to zero.*")
+            .Which.ParamName.Should().Be("value");
+    }
 }

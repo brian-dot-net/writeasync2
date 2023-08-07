@@ -21,7 +21,14 @@ public record Args(int Target, int[] Numbers)
         return new Args(target, numbers);
     }
 
-    private static int ParseInt(string value) => int.TryParse(value, out int result)
-        ? result
-        : throw new FormatException($"The value '{value}' is not a valid integer.");
+    private static int ParseInt(string value)
+    {
+        return int.TryParse(value, out int result)
+            ? result switch
+            {
+                < 0 => throw new ArgumentOutOfRangeException(nameof(value), $"The value {result} was not greater than or equal to zero."),
+                _ => result
+            }
+            : throw new FormatException($"The value '{value}' is not a valid integer.");
+    }
 }
