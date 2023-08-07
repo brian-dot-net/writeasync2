@@ -6,6 +6,7 @@ using BenchmarkDotNet.Attributes;
 
 namespace Digits.Perf;
 
+[MemoryDiagnoser]
 public class BoardBenchmark
 {
     private int[] _n;
@@ -15,12 +16,12 @@ public class BoardBenchmark
         _n = Array.Empty<int>();
     }
 
-    [Params(2, 6)]
+    [Params(2, 4, 6)]
     public int N { get; set; }
 
     [GlobalSetup]
     public void GlobalSetup() => _n = Enumerable.Range(1, N).ToArray();
 
     [Benchmark]
-    public int Str() => new Board(_n).ToString().Length;
+    public bool TryMove() => new Board(_n).TryMove(new Move(0, 1, Ops.Multiply)).IsValid;
 }
