@@ -6,5 +6,5 @@ namespace Digits.Perf;
 
 internal sealed class Program
 {
-    public static void Main() => _ = BenchmarkRunner.Run<BoardBenchmark>();
+    public static void Main() => _ = BenchmarkRunner.Run<SolverBenchmark>();
 }
