@@ -15,9 +15,13 @@ public record Args(int Target, int[] Numbers)
             throw new ArgumentException("There must be at least two input values.", nameof(args));
         }
 
-        var queue = new Queue<int>(args.Select(int.Parse));
+        var queue = new Queue<int>(args.Select(ParseInt));
         int target = queue.Dequeue();
         int[] numbers = queue.ToArray();
         return new Args(target, numbers);
     }
+
+    private static int ParseInt(string value) => int.TryParse(value, out int result)
+        ? result
+        : throw new FormatException($"The value '{value}' is not a valid integer.");
 }

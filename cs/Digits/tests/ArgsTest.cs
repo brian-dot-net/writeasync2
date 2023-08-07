@@ -26,4 +26,13 @@ public sealed class ArgsTest
             .WithMessage("There must be at least two input values.*")
             .Which.ParamName.Should().Be("args");
     }
+
+    [Fact]
+    public void ParseFailsNotAnInt()
+    {
+        Action act = () => Args.Parse("2", "x");
+
+        act.Should().Throw<FormatException>()
+            .WithMessage("The value 'x' is not a valid integer.");
+    }
 }
