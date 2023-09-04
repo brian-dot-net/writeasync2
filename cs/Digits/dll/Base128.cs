@@ -6,7 +6,20 @@ namespace Digits;
 
 public static class Base128
 {
-    public static int Read(Span<byte> input) => input[0];
+    public static int Read(ReadOnlySpan<byte> input)
+    {
+        int i = -1;
+        int output = 0;
+        byte next;
+        do
+        {
+            next = input[++i];
+            output |= (next & 0x7F) << (7 * i);
+        }
+        while (next > 127);
+
+        return output;
+    }
 
     public static int Write(int value, Span<byte> output)
     {

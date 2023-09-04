@@ -1,6 +1,7 @@
 // Copyright (c) Brian Rogers. All rights reserved.
 
 using System;
+using System.Runtime.InteropServices;
 using FluentAssertions;
 using Xunit;
 
@@ -50,6 +51,20 @@ public sealed class Base128Test
 
         output[0].Should().Be(expected0);
         output[1].Should().Be(expected1);
+    }
+
+    [Theory]
+    [InlineData(384, 128)]
+    [InlineData(1000, 488)]
+    [InlineData(10200, 5080)]
+    [InlineData(16383, 8191)]
+    public void ReadTwoBytes(ushort value, short expected)
+    {
+        Span<byte> input = stackalloc byte[2];
+        input[0] = (byte)(value % 256);
+        input[1] = (byte)(value / 256);
+
+        Base128.Read(input).Should().Be(expected);
     }
 
     [Theory]
