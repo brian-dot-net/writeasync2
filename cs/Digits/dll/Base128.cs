@@ -6,6 +6,8 @@ namespace Digits;
 
 public static class Base128
 {
+    public static int Read(Span<byte> input) => input[0];
+
     public static int Write(int value, Span<byte> output)
     {
         int i = 0;

@@ -23,6 +23,19 @@ public sealed class Base128Test
     }
 
     [Theory]
+    [InlineData(0)]
+    [InlineData(10)]
+    [InlineData(100)]
+    [InlineData(127)]
+    public void ReadOneByte(byte value)
+    {
+        Span<byte> input = stackalloc byte[1];
+        input[0] = value;
+
+        Base128.Read(input).Should().Be(value);
+    }
+
+    [Theory]
     [InlineData(128, 128, 1)]
     [InlineData(256, 128, 2)]
     [InlineData(500, 244, 3)]
