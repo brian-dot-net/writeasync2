@@ -8,7 +8,20 @@ public static class Base128
 {
     public static int Write(int value, Span<byte> output)
     {
-        output[0] = (byte)value;
-        return 1;
+        int i = 0;
+        do
+        {
+            byte next = (byte)(value & 0x7F);
+            if (value > 127)
+            {
+                next |= 0x80;
+            }
+
+            value >>= 7;
+            output[i++] = next;
+        }
+        while (value > 0);
+
+        return i;
     }
 }
