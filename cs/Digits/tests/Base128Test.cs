@@ -8,13 +8,17 @@ namespace Digits.Tests;
 
 public sealed class Base128Test
 {
-    [Fact]
-    public void WriteOneByte()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(10)]
+    [InlineData(100)]
+    [InlineData(127)]
+    public void WriteOneByte(byte input)
     {
         Span<byte> output = stackalloc byte[1];
 
-        Base128.Write(0, output).Should().Be(1);
+        Base128.Write(input, output).Should().Be(1);
 
-        output[0].Should().Be(0);
+        output[0].Should().Be(input);
     }
 }
