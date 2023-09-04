@@ -38,4 +38,22 @@ public sealed class Base128Test
         output[0].Should().Be(expected0);
         output[1].Should().Be(expected1);
     }
+
+    [Theory]
+    [InlineData(16384, 128, 128, 1)]
+    [InlineData(32768, 128, 128, 2)]
+    [InlineData(50000, 208, 134, 3)]
+    [InlineData(100000, 160, 141, 6)]
+    [InlineData(1000000, 192, 132, 61)]
+    [InlineData(2097151, 255, 255, 127)]
+    public void WriteThreeBytes(int input, byte expected0, byte expected1, byte expected2)
+    {
+        Span<byte> output = stackalloc byte[3];
+
+        Base128.Write(input, output).Should().Be(3);
+
+        output[0].Should().Be(expected0);
+        output[1].Should().Be(expected1);
+        output[2].Should().Be(expected2);
+    }
 }
