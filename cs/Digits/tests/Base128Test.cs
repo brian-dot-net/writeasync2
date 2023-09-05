@@ -86,6 +86,22 @@ public sealed class Base128Test
     }
 
     [Theory]
+    [InlineData(98432, 16384)]
+    [InlineData(100000, 17184)]
+    [InlineData(1032896, 254272)]
+    [InlineData(5805696, 1444608)]
+    [InlineData(8388607, 2097151)]
+    public void ReadThreeBytes(int value, int expected)
+    {
+        Span<byte> input = stackalloc byte[3];
+        input[0] = (byte)(value % 256);
+        input[1] = (byte)(value / 256 % 256);
+        input[2] = (byte)(value / 65536 % 256);
+
+        Base128.Read(input).Should().Be(expected);
+    }
+
+    [Theory]
     [InlineData(2097152, 128, 128, 128, 1)]
     [InlineData(4194304, 128, 128, 128, 2)]
     [InlineData(5000000, 192, 150, 177, 2)]
