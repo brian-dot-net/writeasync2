@@ -138,4 +138,19 @@ public sealed class List6Test
         list[2].Should().Be(130);
         list[3].Should().Be(131);
     }
+
+    [Fact]
+    public void AddThreeThreeLarger()
+    {
+        List6 list = default;
+
+        list = list.Add(130);
+        list = list.Add(131);
+        list = list.Add(132);
+
+        list.Count.Should().Be(3);
+        list[0].Should().Be(130);
+        list[1].Should().Be(131);
+        list[2].Should().Be(132);
+    }
 }
