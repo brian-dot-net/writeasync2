@@ -81,4 +81,25 @@ public sealed class List6Test
         list[3].Should().Be(90);
         list[4].Should().Be(110);
     }
+
+    [Fact]
+    public void AddSix()
+    {
+        List6 list = default;
+
+        list = list.Add(122);
+        list = list.Add(123);
+        list = list.Add(124);
+        list = list.Add(125);
+        list = list.Add(126);
+        list = list.Add(127);
+
+        list.Count.Should().Be(6);
+        list[0].Should().Be(122);
+        list[1].Should().Be(123);
+        list[2].Should().Be(124);
+        list[3].Should().Be(125);
+        list[4].Should().Be(126);
+        list[5].Should().Be(127);
+    }
 }
