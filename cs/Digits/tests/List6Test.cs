@@ -45,4 +45,21 @@ public sealed class List6Test
         list[1].Should().Be(32);
         list[2].Should().Be(64);
     }
+
+    [Fact]
+    public void AddFour()
+    {
+        List6 list = default;
+
+        list = list.Add(25);
+        list = list.Add(50);
+        list = list.Add(75);
+        list = list.Add(100);
+
+        list.Count.Should().Be(4);
+        list[0].Should().Be(25);
+        list[1].Should().Be(50);
+        list[2].Should().Be(75);
+        list[3].Should().Be(100);
+    }
 }
