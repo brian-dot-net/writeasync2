@@ -30,4 +30,19 @@ public sealed class List6Test
         list[0].Should().Be(10);
         list[1].Should().Be(20);
     }
+
+    [Fact]
+    public void AddThree()
+    {
+        List6 list = default;
+
+        list = list.Add(16);
+        list = list.Add(32);
+        list = list.Add(64);
+
+        list.Count.Should().Be(3);
+        list[0].Should().Be(16);
+        list[1].Should().Be(32);
+        list[2].Should().Be(64);
+    }
 }
