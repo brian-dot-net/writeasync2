@@ -166,4 +166,19 @@ public sealed class List6Test
         list[0].Should().Be(1);
         list[1].Should().Be(6375600);
     }
+
+    [Fact]
+    public void AddThreeOneLargest()
+    {
+        List6 list = default;
+
+        list = list.Add(1);
+        list = list.Add(2);
+        list = list.Add(303600);
+
+        list.Count.Should().Be(3);
+        list[0].Should().Be(1);
+        list[1].Should().Be(2);
+        list[2].Should().Be(303600);
+    }
 }
