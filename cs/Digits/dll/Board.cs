@@ -15,8 +15,13 @@ public readonly struct Board
     private readonly int[] _numbers;
 
     public Board(IEnumerable<int> numbers)
+        : this(numbers.ToArray())
     {
-        _numbers = numbers.ToArray();
+    }
+
+    private Board(int[] numbers)
+    {
+        _numbers = numbers;
     }
 
     public bool IsValid => _numbers.Length > 1;
@@ -43,16 +48,18 @@ public readonly struct Board
             return Invalid;
         }
 
-        var numbers = new List<int> { result };
+        int j = 0;
+        int[] numbers = new int[Count - 1];
+        numbers[j++] = result;
         for (int i = 0; i < Count; i++)
         {
             if (i != move.I1 && i != move.I2)
             {
-                numbers.Add(_numbers[i]);
+                numbers[j++] = _numbers[i];
             }
         }
 
-        numbers.Sort();
+        Array.Sort(numbers);
 
         return new Board(numbers);
     }
