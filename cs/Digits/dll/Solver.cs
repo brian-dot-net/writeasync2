@@ -21,19 +21,19 @@ public sealed class Solver
 
     private void Solve(Board current, IEnumerable<Move> previous, Action<IList<Move>> found)
     {
-        if (current.HasTarget(_target))
-        {
-            found(previous.ToList());
-            return;
-        }
-
         foreach (Move move in Move.Generate(current.Count))
         {
-            Board nextBoard = current.TryMove(move);
+            Board nextBoard = current.TryMove(move, _target, out bool solved);
+            var next = previous.ToList();
+            next.Add(move);
+            if (solved)
+            {
+                found(next);
+                return;
+            }
+
             if (nextBoard.IsValid)
             {
-                var next = previous.ToList();
-                next.Add(move);
                 Solve(nextBoard, next, found);
             }
         }

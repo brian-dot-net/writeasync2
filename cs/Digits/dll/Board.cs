@@ -19,15 +19,14 @@ public sealed class Board
         _numbers = numbers.ToArray();
     }
 
-    public bool IsValid => _numbers.Length > 0;
+    public bool IsValid => _numbers.Length > 1;
 
     public byte Count => (byte)_numbers.Length;
 
-    public bool HasTarget(int target) => _numbers.Contains(target);
-
-    public Board TryMove(Move move)
+    public Board TryMove(Move move, int target, out bool solved)
     {
-        if (!move.IsInRange(_numbers.Length))
+        solved = false;
+        if (!move.IsInRange(Count))
         {
             return Invalid;
         }
@@ -38,8 +37,14 @@ public sealed class Board
             return Invalid;
         }
 
+        if (result == target)
+        {
+            solved = true;
+            return Invalid;
+        }
+
         var numbers = new List<int> { result };
-        for (int i = 0; i < _numbers.Length; i++)
+        for (int i = 0; i < Count; i++)
         {
             if (i != move.I1 && i != move.I2)
             {

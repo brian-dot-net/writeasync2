@@ -34,7 +34,7 @@ internal sealed class Program
         foreach (Move move in moves)
         {
             Console.Write(board.ToString(move) + ". ");
-            board = board.TryMove(move);
+            board = board.TryMove(move, 0, out _);
         }
 
         Console.WriteLine();

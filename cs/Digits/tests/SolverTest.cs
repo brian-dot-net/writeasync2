@@ -34,15 +34,6 @@ public sealed class SolverTest
     }
 
     [Fact]
-    public void DirectSolution2()
-    {
-        IList<string> solutions = Solve(3, new[] { 2, 3 });
-
-        solutions.Should().HaveCount(1).And.ContainInOrder(
-            string.Empty);
-    }
-
-    [Fact]
     public void OneSolution2()
     {
         IList<string> solutions = Solve(6, new[] { 2, 3 });

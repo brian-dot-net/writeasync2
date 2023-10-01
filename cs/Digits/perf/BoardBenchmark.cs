@@ -23,5 +23,5 @@ public class BoardBenchmark
     public void GlobalSetup() => _n = Enumerable.Range(1, N).ToArray();
 
     [Benchmark]
-    public bool TryMove() => new Board(_n).TryMove(new Move(0, 1, Ops.Multiply)).IsValid;
+    public bool TryMove() => new Board(_n).TryMove(new Move(0, 1, Ops.Multiply), -1, out _).IsValid;
 }
