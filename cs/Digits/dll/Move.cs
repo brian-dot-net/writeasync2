@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Digits;
 
-public record Move(byte I1, byte I2, char Op)
+public readonly record struct Move(byte I1, byte I2, char Op)
 {
     public static IEnumerable<Move> Generate(byte length)
     {
