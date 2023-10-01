@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Digits;
 
-public sealed class Board
+public readonly struct Board
 {
     private const int InvalidNumber = -1;
 
