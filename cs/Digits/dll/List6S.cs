@@ -23,29 +23,50 @@ public readonly struct List6S
         _i5 = i5;
     }
 
-    public short this[byte index] => index switch
+    public short this[byte index]
     {
-        0 => _i0,
-        1 => _i1,
-        2 => _i2,
-        3 => _i3,
-        4 => _i4,
-        _ => _i5,
-    };
+        get
+        {
+#pragma warning disable IDE0066 // Convert switch statement to expression
+            switch (index)
+            {
+                case 0:
+                    return _i0;
+                case 1:
+                    return _i1;
+                case 2:
+                    return _i2;
+                case 3:
+                    return _i3;
+                case 4:
+                    return _i4;
+                default:
+                    return _i5;
+            };
+#pragma warning restore IDE0066 // Convert switch statement to expression
+        }
+    }
 
     public byte Count => (byte)_len;
 
     public List6S Add(short value)
     {
-        return Count switch
+#pragma warning disable IDE0066 // Convert switch statement to expression
+        switch (Count)
         {
-            0 => new(1, value),
-            1 => new(2, _i0, value),
-            2 => new(3, _i0, _i1, value),
-            3 => new(4, _i0, _i1, _i2, value),
-            4 => new(5, _i0, _i1, _i2, _i3, value),
-            5 => new(6, _i0, _i1, _i2, _i3, _i4, value),
-            _ => new(),
+            case 0:
+                return new(1, value);
+            case 1:
+                return new(2, _i0, value);
+            case 2:
+                return new(3, _i0, _i1, value);
+            case 3:
+                return new(4, _i0, _i1, _i2, value);
+            case 4:
+                return new(5, _i0, _i1, _i2, _i3, value);
+            default:
+                return new(6, _i0, _i1, _i2, _i3, _i4, value);
         };
+#pragma warning restore IDE0066 // Convert switch statement to expression
     }
 }
