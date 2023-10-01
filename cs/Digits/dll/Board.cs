@@ -21,7 +21,7 @@ public sealed class Board
 
     public bool IsValid => _numbers.Length > 0;
 
-    public int Count => _numbers.Length;
+    public byte Count => (byte)_numbers.Length;
 
     public bool HasTarget(int target) => _numbers.Contains(target);
 

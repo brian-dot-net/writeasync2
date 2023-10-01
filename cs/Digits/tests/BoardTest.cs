@@ -28,7 +28,7 @@ public sealed class BoardTest
     [InlineData(1, 2, Ops.Subtract, "1,3,10,20,50")]
     [InlineData(3, 4, Ops.Multiply, "1,2,5,50,200")]
     [InlineData(1, 5, Ops.Divide, "1,5,10,20,25")]
-    public void MoveValid(int i1, int i2, char op, string result)
+    public void MoveValid(byte i1, byte i2, char op, string result)
     {
         Board board1 = new(new[] { 1, 2, 5, 10, 20, 50 });
 
@@ -42,12 +42,10 @@ public sealed class BoardTest
     [InlineData(0, 0, Ops.Add, "")]
     [InlineData(1, 10, Ops.Subtract, "")]
     [InlineData(6, 1, Ops.Multiply, "")]
-    [InlineData(-1, 2, Ops.Divide, "")]
-    [InlineData(3, -1, Ops.Add, "")]
     [InlineData(4, 5, Ops.Divide, "")]
     [InlineData(0, 3, Ops.Divide, "")]
     [InlineData(1, 2, 'X', "")]
-    public void MoveInvalid(int i1, int i2, char op, string result)
+    public void MoveInvalid(byte i1, byte i2, char op, string result)
     {
         Board board1 = new(new[] { 0, 2, 4, 8, 16, 25 });
 

@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace Digits;
 
-public record Move(int I1, int I2, char Op)
+public record Move(byte I1, byte I2, char Op)
 {
-    public static IEnumerable<Move> Generate(int length)
+    public static IEnumerable<Move> Generate(byte length)
     {
-        for (int i1 = 0; i1 < length; ++i1)
+        for (byte i1 = 0; i1 < length; ++i1)
         {
-            for (int i2 = i1 + 1; i2 < length; ++i2)
+            for (byte i2 = (byte)(i1 + 1); i2 < length; ++i2)
             {
                 foreach (char op in Ops.All)
                 {
