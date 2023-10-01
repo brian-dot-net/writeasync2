@@ -33,7 +33,7 @@ public sealed class ArgsTest
         Action act = () => Args.Parse("2", "x");
 
         act.Should().Throw<FormatException>()
-            .WithMessage("The value 'x' is not a valid integer.");
+            .WithMessage("The value 'x' is not a valid short integer.");
     }
 
     [Fact]

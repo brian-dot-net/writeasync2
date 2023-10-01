@@ -12,7 +12,7 @@ public sealed class SolverTest
     [Fact]
     public void NoSolution2()
     {
-        IList<string> solutions = Solve(1000, new[] { 2, 3 });
+        IList<string> solutions = Solve(1000, new short[] { 2, 3 });
 
         solutions.Should().BeEmpty();
     }
@@ -20,7 +20,7 @@ public sealed class SolverTest
     [Fact]
     public void NoSolution3()
     {
-        IList<string> solutions = Solve(1000, new[] { 3, 4, 5 });
+        IList<string> solutions = Solve(1000, new short[] { 3, 4, 5 });
 
         solutions.Should().BeEmpty();
     }
@@ -28,7 +28,7 @@ public sealed class SolverTest
     [Fact]
     public void NoSolution4()
     {
-        IList<string> solutions = Solve(1000, new[] { 1, 2, 3, 4 });
+        IList<string> solutions = Solve(1000, new short[] { 1, 2, 3, 4 });
 
         solutions.Should().BeEmpty();
     }
@@ -36,7 +36,7 @@ public sealed class SolverTest
     [Fact]
     public void OneSolution2()
     {
-        IList<string> solutions = Solve(6, new[] { 2, 3 });
+        IList<string> solutions = Solve(6, new short[] { 2, 3 });
 
         solutions.Should().HaveCount(1).And.ContainInOrder(
             "[1]*[0]");
@@ -45,7 +45,7 @@ public sealed class SolverTest
     [Fact]
     public void FourSolutions3()
     {
-        IList<string> solutions = Solve(7, new[] { 1, 2, 4 });
+        IList<string> solutions = Solve(7, new short[] { 1, 2, 4 });
 
         solutions.Should().HaveCount(4).And.ContainInOrder(
             "[1]+[0];[1]+[0]",
@@ -57,7 +57,7 @@ public sealed class SolverTest
     [Fact]
     public void OneSolution3()
     {
-        IList<string> solutions = Solve(575, new[] { 2, 23, 25 });
+        IList<string> solutions = Solve(575, new short[] { 2, 23, 25 });
 
         solutions.Should().HaveCount(1).And.ContainInOrder(
             "[2]*[1]");
@@ -66,7 +66,7 @@ public sealed class SolverTest
     [Fact]
     public void ManySolutions5()
     {
-        IList<string> solutions = Solve(1500, new[] { 2, 4, 8, 16, 25 });
+        IList<string> solutions = Solve(1500, new short[] { 2, 4, 8, 16, 25 });
 
         solutions.Should().HaveCount(5).And.ContainInOrder(
             "[2]/[0];[2]*[0];[2]-[0];[1]*[0]",
@@ -76,7 +76,7 @@ public sealed class SolverTest
             "[3]/[0];[2]*[1];[2]-[0];[1]*[0]");
     }
 
-    private static IList<string> Solve(int target, int[] numbers)
+    private static IList<string> Solve(short target, short[] numbers)
     {
         var solver = new Solver(target, new Board(numbers));
         var results = new List<IList<Move>>();

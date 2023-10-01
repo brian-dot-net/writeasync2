@@ -8,10 +8,10 @@ namespace Digits;
 
 public sealed class Solver
 {
-    private readonly int _target;
+    private readonly short _target;
     private readonly Board _board;
 
-    public Solver(int target, Board board)
+    public Solver(short target, Board board)
     {
         _target = target;
         _board = board;

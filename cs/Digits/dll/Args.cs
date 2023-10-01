@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Digits;
 
-public record Args(int Target, int[] Numbers)
+public record Args(short Target, short[] Numbers)
 {
     public static Args Parse(params string[] args)
     {
@@ -15,20 +15,20 @@ public record Args(int Target, int[] Numbers)
             throw new ArgumentException("There must be at least two input values.", nameof(args));
         }
 
-        var queue = new Queue<int>(args.Select(ParseInt));
-        int target = queue.Dequeue();
-        int[] numbers = queue.ToArray();
+        var queue = new Queue<short>(args.Select(ParseShort));
+        short target = queue.Dequeue();
+        short[] numbers = queue.ToArray();
         return new Args(target, numbers);
     }
 
-    private static int ParseInt(string value)
+    private static short ParseShort(string value)
     {
-        return int.TryParse(value, out int result)
+        return short.TryParse(value, out short result)
             ? result switch
             {
                 < 0 => throw new ArgumentOutOfRangeException(nameof(value), $"The value {result} was not greater than or equal to zero."),
                 _ => result
             }
-            : throw new FormatException($"The value '{value}' is not a valid integer.");
+            : throw new FormatException($"The value '{value}' is not a valid short integer.");
     }
 }

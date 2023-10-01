@@ -10,7 +10,7 @@ public sealed class BoardTest
     [Fact]
     public void ToStringShowsNumbers()
     {
-        var board = new Board(new[] { 1, 2, 3, 4, 5, 6 });
+        var board = new Board(new short[] { 1, 2, 3, 4, 5, 6 });
 
         board.ToString().Should().Be("1,2,3,4,5,6");
     }
@@ -18,7 +18,7 @@ public sealed class BoardTest
     [Fact]
     public void ToStringShowsMove()
     {
-        var board = new Board(new[] { 1, 2, 3, 4, 5, 6 });
+        var board = new Board(new short[] { 1, 2, 3, 4, 5, 6 });
 
         board.ToString(new Move(2, 4, '*')).Should().Be("5 * 3 = 15");
     }
@@ -30,7 +30,7 @@ public sealed class BoardTest
     [InlineData(1, 5, Ops.Divide, "1,5,10,20,25")]
     public void MoveValid(byte i1, byte i2, char op, string result)
     {
-        Board board1 = new(new[] { 1, 2, 5, 10, 20, 50 });
+        Board board1 = new(new short[] { 1, 2, 5, 10, 20, 50 });
 
         Board board2 = board1.TryMove(new Move(i1, i2, op), -1, out _);
 
@@ -47,7 +47,7 @@ public sealed class BoardTest
     [InlineData(1, 2, 'X', "")]
     public void MoveInvalid(byte i1, byte i2, char op, string result)
     {
-        Board board1 = new(new[] { 0, 2, 4, 8, 16, 25 });
+        Board board1 = new(new short[] { 0, 2, 4, 8, 16, 25 });
 
         Board board2 = board1.TryMove(new Move(i1, i2, op), -1, out _);
 

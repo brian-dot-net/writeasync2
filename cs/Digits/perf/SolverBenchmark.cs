@@ -1,6 +1,5 @@
 // Copyright (c) Brian Rogers. All rights reserved.
 
-using System.Linq;
 using BenchmarkDotNet.Attributes;
 
 namespace Digits.Perf;
@@ -12,7 +11,7 @@ public class SolverBenchmark
 
     public SolverBenchmark()
     {
-        _solver = new Solver(415, new Board(Enumerable.Range(1, 6)));
+        _solver = new Solver(415, new Board(new short[] { 1, 2, 3, 4, 5, 6 }));
     }
 
     [Benchmark]
