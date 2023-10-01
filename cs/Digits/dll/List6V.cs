@@ -4,11 +4,11 @@ using System;
 
 namespace Digits;
 
-public readonly struct List6
+public readonly struct List6V
 {
     private readonly ulong _raw;
 
-    private List6(ulong raw)
+    private List6V(ulong raw)
     {
         _raw = raw;
     }
@@ -38,7 +38,7 @@ public readonly struct List6
         };
     }
 
-    public List6 Add(int value)
+    public List6V Add(int value)
     {
         Span<byte> bytes = stackalloc byte[6];
         Unpack(bytes);

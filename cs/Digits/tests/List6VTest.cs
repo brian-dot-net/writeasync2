@@ -5,12 +5,12 @@ using Xunit;
 
 namespace Digits.Tests;
 
-public sealed class List6Test
+public sealed class List6VTest
 {
     [Fact]
     public void AddOne()
     {
-        List6 list = default;
+        List6V list = default;
 
         list = list.Add(1);
 
@@ -21,7 +21,7 @@ public sealed class List6Test
     [Fact]
     public void AddTwo()
     {
-        List6 list = default;
+        List6V list = default;
 
         list = list.Add(10);
         list = list.Add(20);
@@ -34,7 +34,7 @@ public sealed class List6Test
     [Fact]
     public void AddThree()
     {
-        List6 list = default;
+        List6V list = default;
 
         list = list.Add(16);
         list = list.Add(32);
@@ -49,7 +49,7 @@ public sealed class List6Test
     [Fact]
     public void AddFour()
     {
-        List6 list = default;
+        List6V list = default;
 
         list = list.Add(25);
         list = list.Add(50);
@@ -66,7 +66,7 @@ public sealed class List6Test
     [Fact]
     public void AddFive()
     {
-        List6 list = default;
+        List6V list = default;
 
         list = list.Add(30);
         list = list.Add(50);
@@ -85,7 +85,7 @@ public sealed class List6Test
     [Fact]
     public void AddSix()
     {
-        List6 list = default;
+        List6V list = default;
 
         list = list.Add(122);
         list = list.Add(123);
@@ -106,7 +106,7 @@ public sealed class List6Test
     [Fact]
     public void AddFiveOneLarger()
     {
-        List6 list = default;
+        List6V list = default;
 
         list = list.Add(1);
         list = list.Add(2);
@@ -125,7 +125,7 @@ public sealed class List6Test
     [Fact]
     public void AddFourTwoLarger()
     {
-        List6 list = default;
+        List6V list = default;
 
         list = list.Add(1);
         list = list.Add(2);
@@ -142,7 +142,7 @@ public sealed class List6Test
     [Fact]
     public void AddThreeThreeLarger()
     {
-        List6 list = default;
+        List6V list = default;
 
         list = list.Add(130);
         list = list.Add(131);
@@ -157,7 +157,7 @@ public sealed class List6Test
     [Fact]
     public void AddTwoOneLargest()
     {
-        List6 list = default;
+        List6V list = default;
 
         list = list.Add(1);
         list = list.Add(6375600);
@@ -170,7 +170,7 @@ public sealed class List6Test
     [Fact]
     public void AddThreeOneLargest()
     {
-        List6 list = default;
+        List6V list = default;
 
         list = list.Add(1);
         list = list.Add(2);
